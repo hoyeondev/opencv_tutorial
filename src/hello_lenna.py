@@ -34,7 +34,7 @@ star_points = np.array([
     [130, 190], [220, 190]
 ], np.float32)
 
-# 2. 별 5개 랜덤으로 그리기
+# 2. 별 10개 랜덤으로 그리기
 for _ in range(10):
     # 랜덤 크기 (작게)
     scale = random.uniform(0.1, 0.3)
