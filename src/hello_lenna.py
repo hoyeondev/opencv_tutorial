@@ -43,8 +43,8 @@ for _ in range(10):
     # 랜덤 위치 (이미지 범위 내)
     move_x = random.randint(0, new_width - int(370 * scale))
     move_y = random.randint(0, new_height - int(340 * scale))
-    points[:, 0] += move_x
-    points[:, 1] += move_y
+    points[:, 0] += move_x # 모든 x좌표에 move_x를 더함
+    points[:, 1] += move_y # 모든 y좌표에 move_y를 더함
 
     # 정수 변환
     points = points.astype(np.int32).reshape((-1, 1, 2))
