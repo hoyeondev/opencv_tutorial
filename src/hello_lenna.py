@@ -7,13 +7,9 @@ new_height = 500
 new_width = 500
 
 image = cv2.imread('../img/like_lenna.png') # 이미지 로드
-image_small = cv2.resize(image, (100, 100)) # 이미지 크기 조정
 
-#cv2.imshow('img',image) # 이미지 출력
-#cv2.imshow('img', image_small) # 크기 조정된 이미지 출력
-# 이미지 원래대로 크기 조정
-dst = np.zeros((new_height, new_width,3), dtype=np.uint8)
-cv2.resize(image, (new_width, new_height), dst=dst)
+# 이미지 크기조정
+dst = cv2.resize(image, (500, 500))
 
 # 빨간색 선
 cv2.line(dst, (260, 220), (280, 240), (0,0,230), 5)
