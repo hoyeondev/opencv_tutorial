@@ -66,9 +66,12 @@ for _ in range(10):
     cv2.fillPoly(dst, [points], color=color)
     cv2.polylines(dst, [points], isClosed=True, color=color, thickness=2)
 
+    # 화면 갱신
+    cv2.imshow('hello_lenna',dst)
+    cv2.waitKey(1)  # OpenCV가 GUI 이벤트를 처리하게
+    time.sleep(0.3) # 별이 나타나는 속도 (0.3초)
 
-
-cv2.imshow('hello_lenna',dst)
+#cv2.imshow('hello_lenna',dst)
 
 # 마지막 화면 유지
 cv2.waitKey(0)
