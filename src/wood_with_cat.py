@@ -28,6 +28,7 @@ def create_mask(img, offset=20):
     return mask, mask_inv
 
 #--- 크로마키 합성 함수
+# roi : Region of Interest(관심 영역)
 def chroma_add(bg, fg, x, y):
     h, w = fg.shape[:2]
     roi = bg[y:y+h, x:x+w]
@@ -54,11 +55,7 @@ for _ in range(5):
 
     # 랜덤 위치 계산 (ROI가 배경 안에 들어가도록)
     max_x = bg.shape[1] - new_width
-    #max_y = bg.shape[0] - new_height
-    
     x = random.randint(0, max_x)
-    #y = random.randint(0, max_y)
-
     y_min = bg.shape[0] - int(bg.shape[0] * 0.4)
     y_max = bg.shape[0] - new_height
     y = random.randint(y_min, y_max)
