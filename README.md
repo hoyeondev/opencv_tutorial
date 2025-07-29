@@ -6,3 +6,6 @@
 - 참고 : https://bkshin.tistory.com/entry/OpenCV-8-%EC%8A%A4%EB%A0%88%EC%8B%9C%ED%99%80%EB%94%A9Thresholding
 ### 3. 이미지 연산 (합성, 알파 블렌딩, 마스킹)
 - 참고 : https://bkshin.tistory.com/entry/OpenCV-9-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%B0%EC%82%B0
+
+#### 4. 이미지 내 관심영역(Region of Interest, ROI)
+- 참고 : https://bkshin.tistory.com/entry/OpenCV-6-dd
