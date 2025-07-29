@@ -1,6 +1,5 @@
-- 소스 참고 : https://github.com/dltpdn/insightbook.opencv_project_python/tree/master
-
 ## 📌 이미지 프로세싱 기초
+소스 참고 : https://github.com/dltpdn/insightbook.opencv_project_python/tree/master
 ### 1. 이미지 색상 표현 방식(BGR, HSV, YUV) : [참고링크](https://bkshin.tistory.com/entry/OpenCV-7-%E3%85%87%E3%85%87)
   
 #### ✔ BGR, BGRA
