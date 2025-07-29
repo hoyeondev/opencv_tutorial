@@ -1,7 +1,10 @@
 ## 📌 이미지 프로세싱 기초
 소스 참고 : https://github.com/dltpdn/insightbook.opencv_project_python/tree/master
 ### 1. 이미지 색상 표현 방식(BGR, HSV, YUV) : [참고링크](https://bkshin.tistory.com/entry/OpenCV-7-%E3%85%87%E3%85%87)
-  
+
+<details>
+<summary>내용보기 🔽</summary>
+
 #### ✔ BGR, BGRA
 - `BGR` : OpenCV에서 기본적으로 사용하는 색상 공간
   - 각 픽셀은 Blue(파란색), Green(초록색), Red(빨간색) 3개의 값으로 구성
@@ -42,9 +45,15 @@
 | **YUV/YCbCr** | Y(밝기), U/Cb, V/Cr(색차)  | 압축 및 방송용, 조명 보정 유리   |
 
 
+</details>
+
 ---
 
 ### 2. 스레시홀딩(Thresholding), 오츠의 알고리즘(Otsu's Method) : [참고링크](https://bkshin.tistory.com/entry/OpenCV-8-%EC%8A%A4%EB%A0%88%EC%8B%9C%ED%99%80%EB%94%A9Thresholding)
+
+<details>
+<summary>내용보기 🔽</summary>
+
 이미지 처리에서 **스레시홀딩(Thresholding)** 은 이미지를 이진화하는 대표적인 기법 <br>
 기준 값(Threshold)을 기준으로 픽셀 값을 두 가지(0 또는 255)로 나누는 과정
 
@@ -92,10 +101,15 @@
 - 객체 검출 전 전처리
 - OCR(문자인식) 단계
 
+</details>
+
 ---
 
 ### 3. 이미지 연산 (합성, 알파 블렌딩, 마스킹) : [참고링크](https://bkshin.tistory.com/entry/OpenCV-9-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%B0%EC%82%B0)
 
+<details>
+<summary>내용보기 🔽</summary>
+  
 #### ✔ 이미지 연산
 - 픽셀 단위로 덧셈, 뺄셈, 비트 연산을 수행.
 - 기본 연산: `cv2.add()`, `cv2.subtract()`, `cv2.bitwise_and()` 등.
@@ -129,10 +143,16 @@
 - 크로마키 영상 합성
 - 투명 PNG 이미지 합성
 - 로고 삽입, 워터마크 처리
-  
+
+</details>
+
 ---
 
 ### 4. 이미지 내 관심영역(Region of Interest, ROI) : [참고링크](https://bkshin.tistory.com/entry/OpenCV-6-dd)
+
+<details>
+<summary>내용보기 🔽</summary>
+  
 #### ✔ ROI란?
 - 이미지에서 특정 관심 있는 영역을 의미합니다.
 - 예: 얼굴 인식에서 얼굴 부분, 물체 탐지에서 물체가 있는 영역.
@@ -169,10 +189,15 @@
 - 이미지 합성(로고 삽입)
 - 특정 영역에만 블러, 엣지 검출 등 이미지 처리 적용
 
+</details>
+
 ---
 
 ### 5. 히스토그램과 정규화(Normalize), 평탄화(Equalization), CLAHE : [참고링크](https://bkshin.tistory.com/entry/OpenCV-10-%ED%9E%88%EC%8A%A4%ED%86%A0%EA%B7%B8%EB%9E%A8)
 
+<details>
+<summary>내용보기 🔽</summary>
+  
 #### ✔ 히스토그램
 - 정의: 이미지 픽셀 값(밝기 또는 색상)의 분포를 나타내는 그래프.
 - 용도:
@@ -210,10 +235,15 @@
 - 문서 스캔 → 글자 대비 향상.
 - 야간 영상 처리 → 어두운 영역의 디테일 향상.
 
+</details>
+
 ---
 
 ### 6. 2차원 히스토그램과 역투영(back project) : [참고링크](https://bkshin.tistory.com/entry/OpenCV-11-2%EC%B0%A8%EC%9B%90-%ED%9E%88%EC%8A%A4%ED%86%A0%EA%B7%B8%EB%9E%A8%EA%B3%BC-%EC%97%AD%ED%88%AC%EC%98%81back-project)
 
+<details>
+<summary>내용보기 🔽</summary>
+  
 #### ✔ 2차원 히스토그램 (2D Histogram)
 - 두 개의 채널 값(예: Hue와 Saturation)의 조합 빈도를 나타내는 히스토그램
 - 1차원 히스토그램과 다르게 축이 2개이고, 각 축이 만나는 지점의 개수를 표현한다.
@@ -249,3 +279,4 @@
 - 영상 검색
   - 히스토그램 비교 기반 유사 영상 검색
 
+</details>
