@@ -1,55 +1,66 @@
 import cv2
 import numpy as np
+import random
 
-#--① 이미지 불러오기
-img1 = cv2.imread('../img/cat_chromakey.jpg')  # 고양이 이미지
-img2 = cv2.imread('../img/forest.jpg')        # 자연 배경 이미지
+#--- 이미지 불러오기
+cat1 = cv2.imread('../img/cat1.jpg')
+cat2 = cv2.imread('../img/cat2.jpg')
+bg = cv2.imread('../img/forest.jpg')
 
-#--② 크기 조정 (배경 크기 800x600)
-img2 = cv2.resize(img2, (800, 600))
+#--- 배경 크기 조정
+bg = cv2.resize(bg, (800, 600))
 
-# 고양이 이미지 비율 유지하며 크기 조정
-cat_width = 300
-scale = cat_width / img1.shape[1]
-cat_height = int(img1.shape[0] * scale)
-img1 = cv2.resize(img1, (cat_width, cat_height))
+#--- 크로마키 마스크 생성 함수
+def create_mask(img, offset=20):
+    # HSV 변환
+    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    chromakey = img[:10, :10, :]  # 좌상단 샘플
+    hsv_chroma = cv2.cvtColor(chromakey, cv2.COLOR_BGR2HSV)
 
-#--③ ROI 선택을 위한 좌표 계산 (중앙 하단에 배치)
-height1, width1 = img1.shape[:2]
-height2, width2 = img2.shape[:2]
-x = (width2 - width1) // 2
-y = height2 - height1
-w = x + width1
-h = y + height1
+    # H 값 기반 범위 설정
+    chroma_h = hsv_chroma[:, :, 0]
+    lower = np.array([max(chroma_h.min() - offset, 0), 80, 80])
+    upper = np.array([min(chroma_h.max() + offset, 179), 255, 255])
 
-#--④ 크로마키 배경 영역 지정 (10픽셀 영역 사용)
-chromakey = img1[:10, :10, :]  # 고양이 이미지 상단 왼쪽 작은 영역
-offset = 20  # HSV H 범위 여유 값
+    mask = cv2.inRange(hsv_img, lower, upper)
+    mask_inv = cv2.bitwise_not(mask)
+    return mask, mask_inv
 
-#--⑤ HSV 변환
-hsv_chroma = cv2.cvtColor(chromakey, cv2.COLOR_BGR2HSV)
-hsv_img = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
+#--- 크로마키 합성 함수
+def chroma_add(bg, fg, x, y):
+    h, w = fg.shape[:2]
+    roi = bg[y:y+h, x:x+w]
+    mask, mask_inv = create_mask(fg)
+    fg_part = cv2.bitwise_and(fg, fg, mask=mask_inv)
+    bg_part = cv2.bitwise_and(roi, roi, mask=mask)
+    combined = cv2.add(fg_part, bg_part)
+    bg[y:y+h, x:x+w] = combined
 
-#--⑥ 크로마키 영역의 H값에서 offset 만큼 여유를 두어 범위 지정
-chroma_h = hsv_chroma[:, :, 0]  # H 채널
-lower = np.array([max(chroma_h.min() - offset, 0), 80, 80])
-upper = np.array([min(chroma_h.max() + offset, 179), 255, 255])
+#--- 메인 처리: 랜덤으로 고양이 추가
+for _ in range(10):
+    # 랜덤으로 cat1 또는 cat2 선택
+    cat_img = random.choice([cat1, cat2])
 
-#--⑦ 마스크 생성
-mask = cv2.inRange(hsv_img, lower, upper)
-mask_inv = cv2.bitwise_not(mask)
+    # 크기 조정: cat1은 300픽셀, cat2는 100픽셀로 조정
+    if cat_img is cat1:
+        new_width = 300  # cat1은 300픽셀
+    else:
+        new_width = 100
 
-#--⑧ ROI 설정
-roi = img2[y:h, x:w]
+    scale = new_width / cat_img.shape[1]
+    new_height = int(cat_img.shape[0] * scale)
+    resized_cat = cv2.resize(cat_img, (new_width, new_height))
 
-#--⑨ 합성 (고양이 전경 + 배경 ROI)
-fg = cv2.bitwise_and(img1, img1, mask=mask_inv)
-bg = cv2.bitwise_and(roi, roi, mask=mask)
-added = fg + bg
-img2[y:h, x:w] = added
+    # 랜덤 위치 계산 (ROI가 배경 안에 들어가도록)
+    max_x = bg.shape[1] - new_width
+    max_y = bg.shape[0] - new_height
+    x = random.randint(0, max_x)
+    y = random.randint(0, max_y)
 
-#--⑩ 결과 출력
-cv2.imshow('chromakey', img1)
-cv2.imshow('added', img2)
+    # 합성
+    chroma_add(bg, resized_cat, x, y)
+
+#--- 결과 출력
+cv2.imshow('Result', bg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
