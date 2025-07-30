@@ -48,8 +48,8 @@ if cap.isOpened():
         mask[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w] = 255  # ROI 부분만 흰색
 
         # 마스크 적용된 그레이 이미지
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        masked_gray = cv2.bitwise_and(gray, gray, mask=mask)
+        # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # masked_gray = cv2.bitwise_and(gray, gray, mask=mask)
 
         # 스레스홀딩 적용
         # _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
@@ -62,23 +62,25 @@ if cap.isOpened():
 
 
         # === 오츠 이진화 ===
-        otsu_thresh_val, binary = cv2.threshold(masked_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        # otsu_thresh_val, binary = cv2.threshold(masked_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
         # === ROI 사각형 시각화 ===
         cv2.rectangle(frame, (roi_x, roi_y), (roi_x+roi_w, roi_y+roi_h), (0, 255, 0), 2)
+        
+        # === ROI 영역에서 중심 찾기 ===
+        # ROI 영역을 그레이스케일로 변환
+        gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+        _, binary = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY_INV)
 
-        # === 무게중심 계산 ===
+        # 이진화된 이미지에서 중심 찾기
+        # 모멘트 계산ㅉ
         M = cv2.moments(binary)
-        if M["m00"] > 0:  # 영역이 존재할 때만
-            cx = int(M["m10"] / M["m00"])
-            cy = int(M["m01"] / M["m00"])
+        if M["m00"] > 0:
+            cx = int(M["m10"] / M["m00"])  # 중심 X 좌표
+            cy = int(M["m01"] / M["m00"])  # 중심 Y 좌표
 
-            # 빨간 원으로 중심 표시
-            cv2.circle(frame, (cx, cy), 6, (0, 0, 255), -1)
-
-            # 중심 좌표 텍스트 표시
-            cv2.putText(frame, f"Center: ({cx}, {cy})", (10, 30),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+            # 중심 표시
+            cv2.circle(roi, (cx, cy), 5, (0, 0, 255), -1)
             
 
         # === 히스토그램 표시 (ROI 영역만) ===
