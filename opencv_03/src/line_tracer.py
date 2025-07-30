@@ -1,11 +1,14 @@
 import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
+# ------------------- 초기 세팅 -------------------
 # 0번 카메라 연결
 cap = cv2.VideoCapture(0)
-
 # 해상도 설정 (640x480)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+# -------------------------------------------------
 
 if cap.isOpened():
     while True:
