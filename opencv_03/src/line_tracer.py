@@ -9,6 +9,7 @@ cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
+# Matplotlib 실시간 업데이트 설정
 plt.ion()
 fig, ax = plt.subplots()
 
@@ -50,7 +51,6 @@ if cap.isOpened():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         masked_gray = cv2.bitwise_and(gray, gray, mask=mask)
 
-
         # 스레스홀딩 적용
         # _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
         # cv2.imshow('Binary Threshold', binary)
@@ -60,12 +60,26 @@ if cap.isOpened():
         #                                         cv2.THRESH_BINARY_INV, 11, 2)
         # cv2.imshow('Adaptive Threshold', adaptive_thresh)
 
-        
+
         # === 오츠 이진화 ===
         otsu_thresh_val, binary = cv2.threshold(masked_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
         # === ROI 사각형 시각화 ===
         cv2.rectangle(frame, (roi_x, roi_y), (roi_x+roi_w, roi_y+roi_h), (0, 255, 0), 2)
+
+        # === 무게중심 계산 ===
+        M = cv2.moments(binary)
+        if M["m00"] > 0:  # 영역이 존재할 때만
+            cx = int(M["m10"] / M["m00"])
+            cy = int(M["m01"] / M["m00"])
+
+            # 빨간 원으로 중심 표시
+            cv2.circle(frame, (cx, cy), 6, (0, 0, 255), -1)
+
+            # 중심 좌표 텍스트 표시
+            cv2.putText(frame, f"Center: ({cx}, {cy})", (10, 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+            
 
         # === 히스토그램 표시 (ROI 영역만) ===
         roi_gray = gray[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w]
