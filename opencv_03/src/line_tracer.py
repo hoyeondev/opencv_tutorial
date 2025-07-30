@@ -36,11 +36,20 @@ if cap.isOpened():
         frame = cv2.flip(frame, 1)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+        # 스레스홀딩 적용
+        # _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
+        # cv2.imshow('Binary Threshold', binary)
+
+        # # 적응형 스레스홀딩 적용
+        # adaptive_thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+        #                                         cv2.THRESH_BINARY_INV, 11, 2)
+        # cv2.imshow('Adaptive Threshold', adaptive_thresh)
+
         # 오츠 알고리즘으로 임계값 자동 계산
         # otsu_thresh_val, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
         # 히스토그램 표시
-        plot_histogram(gray)
+        # plot_histogram(gray)
 
         # 결과 표시
         cv2.imshow('Original', frame)
