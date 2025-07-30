@@ -34,7 +34,22 @@ if cap.isOpened():
             break
 
         frame = cv2.flip(frame, 1)
+        height, width, _ = frame.shape
+
+        # === A4 용지 영역(ROI) 설정 ===
+        # 화면 중앙에 A4 크기 비슷한 사각형 ROI 지정
+        roi_x, roi_y = int(width * 0.2), int(height * 0.2)
+        roi_w, roi_h = int(width * 0.6), int(height * 0.6)
+        roi = frame[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w]
+
+        # === ROI 마스크 생성 ===
+        mask = np.zeros((height, width), dtype=np.uint8)
+        mask[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w] = 255  # ROI 부분만 흰색
+
+        # 마스크 적용된 그레이 이미지
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        masked_gray = cv2.bitwise_and(gray, gray, mask=mask)
+
 
         # 스레스홀딩 적용
         # _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
@@ -45,16 +60,21 @@ if cap.isOpened():
         #                                         cv2.THRESH_BINARY_INV, 11, 2)
         # cv2.imshow('Adaptive Threshold', adaptive_thresh)
 
-        # 오츠 알고리즘으로 임계값 자동 계산
-        # otsu_thresh_val, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        
+        # === 오츠 이진화 ===
+        otsu_thresh_val, binary = cv2.threshold(masked_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-        # 히스토그램 표시
-        # plot_histogram(gray)
+        # === ROI 사각형 시각화 ===
+        cv2.rectangle(frame, (roi_x, roi_y), (roi_x+roi_w, roi_y+roi_h), (0, 255, 0), 2)
 
-        # 결과 표시
-        cv2.imshow('Original', frame)
-        cv2.imshow('Gray', gray)
-        # cv2.imshow(f'Binary Threshold (Otsu: {otsu_thresh_val:.2f})', binary)
+        # === 히스토그램 표시 (ROI 영역만) ===
+        roi_gray = gray[roi_y:roi_y+roi_h, roi_x:roi_x+roi_w]
+        plot_histogram(roi_gray)
+
+        # === 결과 표시 ===
+        cv2.imshow('Original with ROI', frame)
+        # cv2.imshow('Masked Gray', masked_gray)
+        # cv2.imshow(f'Binary (Otsu: {otsu_thresh_val:.2f})', binary)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
