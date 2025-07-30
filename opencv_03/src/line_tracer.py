@@ -73,7 +73,7 @@ if cap.isOpened():
         _, binary = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY_INV)
 
         # 이진화된 이미지에서 중심 찾기
-        # 모멘트 계산ㅉ
+        # 모멘트 계산
         M = cv2.moments(binary)
         if M["m00"] > 0:
             cx = int(M["m10"] / M["m00"])  # 중심 X 좌표
