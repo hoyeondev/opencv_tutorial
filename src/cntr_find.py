@@ -25,6 +25,10 @@ cv2.drawContours(img2, contour, -1, (0, 255, 0), 4)
 # 꼭지점 좌표만을 갖는 컨투어 그리기, 초록색
 cv2.drawContours(img2, contour2, -1, (0, 255, 0), 4)
 
+# 네모 이미지에만 꼭지점 좌표만을 갖는 컨투어를 그리기
+#cv2.drawContours(img2, contour2, 1, (0, 255, 0), 4)
+
+
 # 컨투어 모든 좌표를 작은 파란색 점(원)으로 표시
 for i in contour:
     for j in i:
