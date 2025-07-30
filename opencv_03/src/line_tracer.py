@@ -12,7 +12,17 @@ if cap.isOpened():
         ret, img = cap.read()  # 프레임 읽기
         if ret:
             img = cv2.flip(img, 1)  # 좌우 반전
+
+            height, width, _ = img.shape
+            # BGR → GRAY 변환
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # BGR → HSV 변환
+            hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+            # 원본과 변환된 영상을 함께 출력
             cv2.imshow('camera', img)
+            cv2.imshow('GRAY', gray)
+            cv2.imshow('HSV', hsv)
 
             # 'q' 키로 종료
             if cv2.waitKey(1) & 0xFF == ord('q'):
