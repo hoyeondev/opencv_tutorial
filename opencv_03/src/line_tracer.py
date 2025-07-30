@@ -34,7 +34,7 @@ if cap.isOpened():
             print("no frame")
             break
 
-        frame = cv2.flip(frame, 1)
+        # frame = cv2.flip(frame, 1)
         height, width, _ = frame.shape
 
         # === A4 용지 영역(ROI) 설정 ===
