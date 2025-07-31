@@ -67,13 +67,16 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
             _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
             # OCR 인식
-            text = pytesseract.image_to_string(thresh, lang='eng')
+            # text = pytesseract.image_to_string(thresh, lang='kor')
+            text = pytesseract.image_to_string(thresh, lang='kor+eng', config='--psm 7')
+
             plate_text = ''.join(filter(str.isalnum, text))
 
             print(f"Detected Plate Text: {plate_text}")
 
             # 결과 이미지 출력
             cv2.imshow('scanned', result)
+            # cv2.imshow('thresh', thresh) # 스레시홀드 이미지 확인용
 
             # 저장 (PNG 형식)
             existing_files = len(os.listdir(save_dir))
