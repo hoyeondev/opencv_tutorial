@@ -65,10 +65,41 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
             gray = cv2.GaussianBlur(gray, (3, 3), 0)
             _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-            ocr_result = reader.readtext(thresh, detail=0)  # detail=0 → 텍스트만 반환
-            plate_text = ''.join(ocr_result).strip()
+            # ocr_result = reader.readtext(thresh, detail=0)  # detail=0 → 텍스트만 반환
+            # plate_text = ''.join(ocr_result).strip()
 
-            print(f"Detected Plate Text: {plate_text}")
+            # print(f"Detected Plate Text: {plate_text}")
+            # 컨투어 검출 (외곽선만)
+            contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            # OCR 인식 결과 저장할 변수
+            ocr_text = ""
+
+            for cnt in contours:
+                # 컨투어 영역의 크기 계산
+                area = cv2.contourArea(cnt)
+                if area < 100:  # 너무 작은 영역은 무시 (노이즈 제거)
+                    continue
+
+                # 컨투어를 감싸는 최소 사각형 좌표
+                x, y, w, h = cv2.boundingRect(cnt)
+
+                # 비율 조건 추가 가능 (번호판 글자 영역은 특정 비율을 갖는 경우가 많음)
+                aspect_ratio = w / h
+                if aspect_ratio < 0.2 or aspect_ratio > 5:
+                    continue
+
+                # 관심 영역(ROI) 추출
+                roi = thresh[y:y+h, x:x+w]
+
+                # OCR 수행 (예: EasyOCR 또는 pytesseract)
+                text = reader.readtext(roi, detail=0)  # EasyOCR 사용 시
+                # text = pytesseract.image_to_string(roi, lang='kor+eng', config='--psm 7')  # pytesseract 사용 시
+
+                if text:
+                    ocr_text += ''.join(text).strip()
+
+            print("OCR Text from contours:", ocr_text)
 
             # 결과 이미지 출력
             cv2.imshow('scanned', result)
