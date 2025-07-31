@@ -24,6 +24,8 @@ imgs.sort()  # 파일명 순서대로 정렬 (추천)
 
 
 # Tesseract 경로 설정 (Windows에서 필수)
+# Tesseract-OCR 설치 : https://github.com/UB-Mannheim/tesseract/wiki
+# 한글 언어팩 설치 : https://github.com/tesseract-ocr/tessdata/blob/main/kor.traineddata
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # -------------------------------------------------------------------------------
@@ -58,6 +60,17 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
             # 변환 행렬 계산 & 원근 변환
             mtrx = cv2.getPerspectiveTransform(pts1, pts2)
             result = cv2.warpPerspective(img, mtrx, (width, height))
+
+            # OCR 적용
+            gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
+            gray = cv2.GaussianBlur(gray, (3, 3), 0)
+            _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+            # OCR 인식
+            text = pytesseract.image_to_string(thresh, lang='eng')
+            plate_text = ''.join(filter(str.isalnum, text))
+
+            print(f"Detected Plate Text: {plate_text}")
 
             # 결과 이미지 출력
             cv2.imshow('scanned', result)
