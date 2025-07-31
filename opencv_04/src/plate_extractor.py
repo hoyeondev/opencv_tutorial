@@ -59,7 +59,7 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
 
             # 저장 (PNG 형식)
             existing_files = len(os.listdir(save_dir))
-            filename = f"extracted_plates/plate_{existing_files+1:03d}.png"
+            filename = f"../extracted_plates/plate_{existing_files+1:03d}.png"
 
             cv2.imwrite(filename, result)
             print(f"Saved: {filename}")
@@ -86,5 +86,5 @@ for path in imgs:
     # 이 이미지 처리 완료될 때까지 대기
     while not image_done:
         cv2.waitKey(1)
-
+        
 cv2.destroyAllWindows()
