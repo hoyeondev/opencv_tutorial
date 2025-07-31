@@ -198,3 +198,11 @@ for path in imgs:
     img = cv2.imread(path)
     cv2.imshow(win_name, img)
 ```
+
+## 3. 이미지 전처리 기능 추가
+추출된 번호판 이미지를 OCR 인식을 위해 최적화 처리
+- 그레이스케일 변환
+- 대비 최적화
+- 컨투어로 윤곽선 검출
+
+<img width="799" height="127" alt="image" src="https://github.com/user-attachments/assets/b8b6e5b7-2f93-40ae-91ae-0e8505ac525b" />
