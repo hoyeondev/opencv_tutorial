@@ -1,4 +1,5 @@
 # 어핀 변환 (getAffine.py)
+# 이미지를 2차원으로 뒤트는 기능
 
 import cv2
 import numpy as np
