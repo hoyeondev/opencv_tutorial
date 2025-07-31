@@ -65,11 +65,54 @@ dst4 = cv2.warpAffine(img, m_big, (int(height*2), int(width*2)), \
 | **사용 예시**  | 딥러닝 이미지 전처리, 썸네일 생성                                   | 카메라 캘리브레이션, 기울어진 이미지 보정  |
 
 ## ✔ 이미지 회전 (Rotation)
-
-
+이미지를 특정 각도로 회전
+```python
+# 중심점 (cols/2, rows/2), 각도 45도, 배율 1.0
+M = cv2.getRotationMatrix2D((cols/2, rows/2), 45, 1.0)
+rotated = cv2.warpAffine(img, M, (cols, rows))
+```
 
 # 📌 이미지 뒤틀기(어핀 변환, 원근 변환)
 - 참고 : [내용](https://bkshin.tistory.com/entry/OpenCV-14-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%92%A4%ED%8B%80%EA%B8%B0%EC%96%B4%ED%95%80-%EB%B3%80%ED%99%98-%EC%9B%90%EA%B7%BC-%EB%B3%80%ED%99%98)
+
+## ✔ 어핀 변환(Affine Transform)
+- 직선은 직선으로 유지되며, 평행선도 평행 상태 유지
+- 크기, 각도, 비율이 변할 수 있음 (즉, 뒤틀림 가능)
+- 필요한 점: 3쌍의 대응점
+```python
+# 3개의 점 매칭
+pts1 = np.float32([[50, 50], [200, 50], [50, 200]])
+pts2 = np.float32([[10, 100], [200, 50], [100, 250]])
+
+# 어핀 변환 행렬
+M = cv2.getAffineTransform(pts1, pts2)
+
+# 어핀 변환 적용
+affine = cv2.warpAffine(img, M, (cols, rows))
+
+cv2.imshow('Affine', affine)
+cv2.waitKey(0)
+```
+## ✔ 원근 변환(Perspective Transform)
+- 카메라 시점에서 보는 투시 왜곡까지 표현 가능
+- 평행선이 소실점으로 모이는 효과
+- 필요한 점: 4쌍의 대응점
+```python
+# 4개의 점 매칭
+pts1 = np.float32([[100, 100], [300, 100], [100, 300], [300, 300]])
+pts2 = np.float32([[80, 120], [310, 100], [100, 310], [300, 320]])
+
+# 원근 변환 행렬
+M = cv2.getPerspectiveTransform(pts1, pts2)
+
+# 원근 변환 적용
+perspective = cv2.warpPerspective(img, M, (cols, rows))
+
+cv2.imshow('Perspective', perspective)
+cv2.waitKey(0)
+```
+#### 마우스와 원근 변환으로 문서 스캔 효과내기
+> <img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/10a73df0-6281-4026-a85e-fa1472f51402" />
 
 # 📌자동차 번호판 추출 프로젝트
 
