@@ -2,6 +2,12 @@
 
 import cv2
 import numpy as np
+import os
+
+# 저장할 폴더
+save_dir = "../extracted_plates"
+os.makedirs(save_dir, exist_ok=True)  # 폴더 없으면 생성
+file_count = 0  # 파일 이름을 위한 카운터
 
 win_name = "License Plate Extractor"
 img = cv2.imread("../img/car_02.jpg")
