@@ -24,7 +24,7 @@ imgs.sort()  # 파일명 순서대로 정렬 (추천)
 # -------------------------------------------------------------------------------
 
 def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구현 ---① 
-    global  pts_cnt                     # 마우스로 찍은 좌표의 갯수 저장
+    global  pts_cnt, image_done              # 전역 변수 설정
     if event == cv2.EVENT_LBUTTONDOWN:  # 좌클릭 이벤트
         cv2.circle(draw, (x,y), 10, (0,255,0), -1) # 좌표에 초록색 동그라미 표시
         cv2.imshow(win_name, draw)
@@ -86,5 +86,5 @@ for path in imgs:
     # 이 이미지 처리 완료될 때까지 대기
     while not image_done:
         cv2.waitKey(1)
-        
+
 cv2.destroyAllWindows()
