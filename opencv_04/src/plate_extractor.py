@@ -105,17 +105,19 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
 
             # 결과 이미지 출력
             cv2.imshow('scanned', result)
-            cv2.imshow('thresh', thresh) # 스레시홀드 이미지 확인용
+            # cv2.imshow('thresh', thresh) # 스레시홀드 이미지 확인용
 
             # 저장 (PNG 형식)
             existing_files = len(os.listdir(save_dir))
             filename = f"../extracted_plates/plate_{existing_files+1:03d}.png"
 
-            existing_files = len(os.listdir(save_dir))
-            filename = f"../processed_plates/proc_{existing_files+1:03d}.png"
+            # 이미지 전처리 저장
+            proc_files = len(os.listdir(proc_save_dir))
+            filename2 = f"../processed_plates/proc_{proc_files+1:03d}.png"
 
 
             cv2.imwrite(filename, result)
+            cv2.imwrite(filename2, thresh)
             print(f"Saved: {filename}")
 
             cv2.waitKey(500)  # 잠깐 결과 확인
