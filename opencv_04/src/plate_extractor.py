@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 import os
+import pytesseract
 
 # ----------------------초기 설정-------------------------------------------
 
@@ -20,6 +21,10 @@ for file in os.listdir("../img/"):
         imgs.append(os.path.join("../img/", file))
 
 imgs.sort()  # 파일명 순서대로 정렬 (추천)
+
+
+# Tesseract 경로 설정 (Windows에서 필수)
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # -------------------------------------------------------------------------------
 
