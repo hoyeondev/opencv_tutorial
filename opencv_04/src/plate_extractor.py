@@ -10,7 +10,9 @@ import re
 
 # 저장할 폴더
 save_dir = "../extracted_plates"
+proc_save_dir = "../processed_plates"
 os.makedirs(save_dir, exist_ok=True)  # 폴더 없으면 생성
+os.makedirs(proc_save_dir, exist_ok=True)  # 폴더 없으면 생성
 file_count = 0  # 파일 이름을 위한 카운터
 
 win_name = "License Plate Extractor"
@@ -109,7 +111,9 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
             existing_files = len(os.listdir(save_dir))
             filename = f"../extracted_plates/plate_{existing_files+1:03d}.png"
 
-            # @TODO: 번호판 텍스트 메모장에 저장
+            existing_files = len(os.listdir(save_dir))
+            filename = f"../processed_plates/proc_{existing_files+1:03d}.png"
+
 
             cv2.imwrite(filename, result)
             print(f"Saved: {filename}")
