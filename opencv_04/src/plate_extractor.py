@@ -10,7 +10,12 @@ os.makedirs(save_dir, exist_ok=True)  # 폴더 없으면 생성
 file_count = 0  # 파일 이름을 위한 카운터
 
 win_name = "License Plate Extractor"
-img = cv2.imread("../img/car_02.jpg")
+# img = cv2.imread("../img/car_02.jpg")
+# ../img/ 폴더 내에 있는 'car_'로 시작하는 이미지 파일을 읽어오기
+for file in os.listdir("../img/"):
+    if file.startswith("car_") and file.endswith(".jpg"):
+        img = cv2.imread(os.path.join("../img/", file))
+        break
 rows, cols = img.shape[:2]
 draw = img.copy() # 점을 그릴 이미지 복사본
 pts_cnt = 0 # 클릭한 점의 개수
@@ -50,7 +55,15 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
 
             # 결과 이미지 출력
             cv2.imshow('scanned', result)
-            
+
+            # 저장 (PNG 형식)
+            save_path = os.path.join(save_dir, f"plate_{file_count:03d}.png")
+            cv2.imwrite(save_path, result)
+            print(f"Saved: {save_path}")
+            file_count += 1
+
+
+
 cv2.imshow(win_name, img)
 cv2.setMouseCallback(win_name, onMouse)    # 마우스 콜백 함수를 GUI 윈도우에 등록 ---④
 cv2.waitKey(0)
