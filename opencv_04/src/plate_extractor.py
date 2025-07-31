@@ -73,18 +73,25 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
 
 # --- 메인 처리 ---
 for path in imgs:
-    print(path)
+    print(f"Processing: {path}")
     img = cv2.imread(path)
     draw = img.copy()
-    pts_cnt = 0 # 클릭한 점의 개수
-    pts = np.zeros((4,2), dtype=np.float32) # 클릭한 점의 좌표를 저장할 배열
-    image_done = False  # 현재 이미지 완료 여부 플래그
+    pts_cnt = 0
+    pts = np.zeros((4, 2), dtype=np.float32)
+    image_done = False
 
     cv2.imshow(win_name, img)
     cv2.setMouseCallback(win_name, onMouse)
 
-    # 이 이미지 처리 완료될 때까지 대기
-    while not image_done:
-        cv2.waitKey(1)
+    while True:
+        key = cv2.waitKey(1) & 0xFF
+        if image_done:
+            break  # 다음 이미지로
+        if key == 27:  # ESC 스킵
+            print("Skipped this image.")
+            break
+        if key == ord('q'):  # 전체 종료
+            print("Exit program.")
+            cv2.destroyAllWindows()
+            exit()
 
-cv2.destroyAllWindows()
