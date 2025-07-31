@@ -21,6 +21,8 @@ blur3 = cv2.GaussianBlur(img, (3, 3), 0)
 # 결과 출력
 print('k1:', k1)
 print('k2:', k2*k2.T)
+# np.hstack()으로 이미지 나란히 합치기 ---④
+# hstack : 여러 배열(또는 이미지)을 수평(가로)으로 연결
 merged = np.hstack((img, blur1, blur2, blur3))
 cv2.imshow('gaussian blur', merged)
 cv2.waitKey(0)
