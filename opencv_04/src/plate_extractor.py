@@ -16,6 +16,7 @@ for file in os.listdir("../img/"):
     if file.startswith("car_") and file.endswith(".jpg"):
         img = cv2.imread(os.path.join("../img/", file))
         break
+
 rows, cols = img.shape[:2]
 draw = img.copy() # 점을 그릴 이미지 복사본
 pts_cnt = 0 # 클릭한 점의 개수
@@ -57,14 +58,21 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
             cv2.imshow('scanned', result)
 
             # 저장 (PNG 형식)
-            save_path = os.path.join(save_dir, f"plate_{file_count:03d}.png")
-            cv2.imwrite(save_path, result)
-            print(f"Saved: {save_path}")
-            file_count += 1
+            existing_files = len(os.listdir("../extracted_plates/"))
+            filename = f"extracted_plates/plate_{existing_files+1:03d}.png"
+
+            cv2.imwrite(filename, result)
+            print(f"Saved: {filename}")
 
 
+# for 문으로 이미지 파일 읽어오기
+for car in img:
+    cv2.imshow(win_name, img)  # 원본 이미지 출력
+    cv2.setMouseCallback(win_name, onMouse)  # 마우스 콜백 함수 등록 ---③
+    cv2.waitKey(0)  # 키 입력 대기
+    draw = img.copy()  # 다음 이미지 클릭을 위해 draw 초기화
 
-cv2.imshow(win_name, img)
-cv2.setMouseCallback(win_name, onMouse)    # 마우스 콜백 함수를 GUI 윈도우에 등록 ---④
-cv2.waitKey(0)
+# cv2.imshow(win_name, img)
+# cv2.setMouseCallback(win_name, onMouse)    # 마우스 콜백 함수를 GUI 윈도우에 등록 ---④
+# cv2.waitKey(0)
 cv2.destroyAllWindows()
