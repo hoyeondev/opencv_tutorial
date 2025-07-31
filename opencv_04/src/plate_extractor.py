@@ -3,7 +3,8 @@
 import cv2
 import numpy as np
 import os
-import pytesseract
+import easyocr
+import re
 
 # ----------------------초기 설정-------------------------------------------
 
@@ -23,10 +24,8 @@ for file in os.listdir("../img/"):
 imgs.sort()  # 파일명 순서대로 정렬 (추천)
 
 
-# Tesseract 경로 설정 (Windows에서 필수)
-# Tesseract-OCR 설치 : https://github.com/UB-Mannheim/tesseract/wiki
-# 한글 언어팩 설치 : https://github.com/tesseract-ocr/tessdata/blob/main/kor.traineddata
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# EasyOCR Reader (한글 + 영어)
+reader = easyocr.Reader(['ko', 'en'])
 
 # -------------------------------------------------------------------------------
 
@@ -61,26 +60,25 @@ def onMouse(event, x, y, flags, param):  #마우스 이벤트 콜백 함수 구�
             mtrx = cv2.getPerspectiveTransform(pts1, pts2)
             result = cv2.warpPerspective(img, mtrx, (width, height))
 
-            # OCR 적용
+            # 이미지 전처리(흑백, 블러, 스레시홀드)
             gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
             gray = cv2.GaussianBlur(gray, (3, 3), 0)
             _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-            # OCR 인식
-            # text = pytesseract.image_to_string(thresh, lang='kor')
-            text = pytesseract.image_to_string(thresh, lang='kor+eng', config='--psm 7')
-
-            plate_text = ''.join(filter(str.isalnum, text))
+            ocr_result = reader.readtext(thresh, detail=0)  # detail=0 → 텍스트만 반환
+            plate_text = ''.join(ocr_result).strip()
 
             print(f"Detected Plate Text: {plate_text}")
 
             # 결과 이미지 출력
             cv2.imshow('scanned', result)
-            # cv2.imshow('thresh', thresh) # 스레시홀드 이미지 확인용
+            cv2.imshow('thresh', thresh) # 스레시홀드 이미지 확인용
 
             # 저장 (PNG 형식)
             existing_files = len(os.listdir(save_dir))
             filename = f"../extracted_plates/plate_{existing_files+1:03d}.png"
+
+            # @TODO: 번호판 텍스트 메모장에 저장
 
             cv2.imwrite(filename, result)
             print(f"Saved: {filename}")
