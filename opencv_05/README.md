@@ -38,7 +38,7 @@
 - 카메라 영상에서 q 키를 누르면 while 루프 종료
 
 ## 4. 실행
-```python
+```bash
 # src
 python qr_scan.py
 ```
@@ -81,8 +81,16 @@ Aruco marker를 이용하여 위치와 자세를 추정하기 위해서는 다�
 카메라와 아루코 마커가 임계거리 이상으로 가까워졌을 때
 > <img width="344" height="255" alt="image" src="https://github.com/user-attachments/assets/99acbc5e-2cbc-419d-ba24-b33bcfa50ac7" />
 
+## 4. 실행
+```bash
+#./src
+python photo.py
+python calibration3.py
+python distanceDetection2.py
+python scanArucoMarker2.py
+```
 
-##  Aruco Marker 활용 분야
+## 5. Aruco Marker 활용 분야
 - 증강현실(AR): 마커 위에 3D 오브젝트 배치
 - 로봇 내비게이션: 실내에서 마커 기반 로컬라이제이션
 - 드론 제어: 마커를 기준으로 정확한 착륙 수행
