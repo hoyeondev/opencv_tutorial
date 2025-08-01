@@ -5,9 +5,12 @@
 - 인식된 QR 코드가 URL일 경우 기본 웹 브라우저에서 자동으로 열기
 - 동일 URL을 반복해서 열지 않도록 중복 방지 로직 추가
 - 인식 상태를 화면에 시각적으로 표시 (사각형 + 텍스트)
-<img width="575" height="374" alt="image" src="https://github.com/user-attachments/assets/7208078e-0e89-414f-8822-71ae6ed363ce" />
+> <img width="575" height="374" alt="image" src="https://github.com/user-attachments/assets/7208078e-0e89-414f-8822-71ae6ed363ce" />
 
-## 2. 동작 설명
+## 2. 활용 라이브러리
+- openCV, matplotlib, pyzbar, webbrowser
+
+## 3. 동작 설명
 
 ### 1. 카메라 입력 처리
 
@@ -34,8 +37,67 @@
 
 - 카메라 영상에서 q 키를 누르면 while 루프 종료
 
-## 3. 실행
+## 4. 실행
 ```python
 # src
 python qr_scan.py
 ```
+
+---
+
+# 📌 Aruco Marker를 이용한 위치추정
+
+## 1. Aruco Marker란?
+- Rafael Muñoz와 Sergio Garrido가 개발한 정사각형 패턴이며, 로봇비전, 증강현실, 자동화 공정등에 널리 사용되고 있다.
+- 비전 기술을 접목하여 비접촉으로 가까운 거리 또는 적당한 거리(수미터내)에서 적당한 측정 정확도가 mm ~ cm 를 제공할 수 있다.
+
+> <img width="250" alt="image" src="https://github.com/user-attachments/assets/6251c2b0-4c15-4aec-a0f9-2650dd26ff84" />
+
+
+#### 비전를 이용하여 Aruco marker의 위치 추정
+Aruco marker를 이용하여 위치와 자세를 추정하기 위해서는 다음과 같은 과정을 거쳐야 한다.
+
+- 카메라 파라메터(Camera parameter) 와 렌즈 왜곡(Lens distortion) 얻기
+- Aruco marker 생성
+  - 인식 가능한 고유 마커를 만들어 출력(프린트) 후 사용
+- Aruco marker 검출
+  - 입력된 영상에서 마커 위치(코너점)와 ID를 인식
+- PnP(Persepective-n-Point)
+  - 마커의 2D 이미지상 좌표 → 3D 실제 좌표 변환 (위치 및 자세 추정)
+
+## 2. 목표
+- 웹캠으로 체커보드를 촬영해 카메라와 렌즈 왜곡 파라메터를 얻는다.
+  - 카메라나 렌즈 왜곡 파라메터는 제조사에서 제공하지 않는 이상 알기 어려우므로
+- Aruco marker 생성 및 검출 후 카메라와 마커 간의 거리를 계산한다.
+- 임계 거리 설정 후 Go, Stop 안내를 표시한다.
+
+## 3. 실행결과
+
+### Go
+설정한 임계 거리 이상으로 카메라와 아루코 마커가 멀어졌을 때
+> <img width="344" height="225" alt="image" src="https://github.com/user-attachments/assets/219327eb-803d-4393-869c-5811b7873fc6" />
+
+### Stop
+카메라와 아루코 마커가 임계거리 이상으로 가까워졌을 때
+> <img width="344" height="255" alt="image" src="https://github.com/user-attachments/assets/99acbc5e-2cbc-419d-ba24-b33bcfa50ac7" />
+
+
+##  Aruco Marker 활용 분야
+- 증강현실(AR): 마커 위에 3D 오브젝트 배치
+- 로봇 내비게이션: 실내에서 마커 기반 로컬라이제이션
+- 드론 제어: 마커를 기준으로 정확한 착륙 수행
+- 카메라 보정: 3D 공간에서 정확한 좌표 추정
+
+
+
+
+
+
+
+
+
+
+
+
+
+
