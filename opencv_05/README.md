@@ -39,7 +39,7 @@
 
 ## 4. 실행
 ```bash
-# src
+# ./src
 python qr_scan.py
 ```
 
