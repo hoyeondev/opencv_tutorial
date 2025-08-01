@@ -34,3 +34,8 @@
 
 - 카메라 영상에서 q 키를 누르면 while 루프 종료
 
+## 3. 실행
+```python
+# src
+python qr_scan.py
+```
