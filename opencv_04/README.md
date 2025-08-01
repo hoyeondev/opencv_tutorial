@@ -208,7 +208,7 @@ for path in imgs:
 <img width="799" height="127" alt="image" src="https://github.com/user-attachments/assets/b8b6e5b7-2f93-40ae-91ae-0e8505ac525b" />
 
 ## 4. 실행
-```python
+```bash
 # /src
 python plate_extractor.py
 ```
