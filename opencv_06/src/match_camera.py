@@ -37,7 +37,9 @@ while cap.isOpened():
     ret, frame = cap.read() 
     if not ret:
         break
-        
+    
+    frame = cv2.flip(frame, 1)
+
     if img1 is None:  # 등록된 이미지 없음, 카메라 바이패스
         res = frame
     else:             # 등록된 이미지 있는 경우, 매칭 시작
@@ -76,9 +78,11 @@ while cap.isOpened():
             
             # matchesMask 초기화를 None으로 설정
             matchesMask = None
+            label = "DIFFERENT PRODUCT"
             
             # 좋은 매칭점 최소 갯수 이상인 경우
-            if len(good_matches) > MIN_MATCH: 
+            if len(good_matches) > MIN_MATCH:
+                
                 # 좋은 매칭점으로 원본과 대상 영상의 좌표 구하기
                 src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
                 dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
@@ -90,7 +94,8 @@ while cap.isOpened():
                     accuracy = float(mask.sum()) / mask.size
                     print("accuracy: %d/%d(%.2f%%)" % (mask.sum(), mask.size, accuracy * 100))
                     
-                    if mask.sum() > MIN_MATCH:  # 정상치 매칭점 최소 갯수 이상인 경우
+                    if mask.sum() > MIN_MATCH and accuracy > 0.3:  # 정상치 매칭점 최소 갯수 이상인 경우
+                        label = "SAME PRODUCT"
                         # 마스크를 리스트로 변환 (정수형으로)
                         matchesMask = [int(x) for x in mask.ravel()]
                         
@@ -106,6 +111,10 @@ while cap.isOpened():
                                 singlePointColor=None,
                                 matchesMask=matchesMask,
                                 flags=cv2.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS)
+            
+
+            cv2.putText(res, label, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5,
+                        (0, 0, 255) if label == "DIFFERENT PRODUCT" else (0, 255, 0), 3)
     
     # 결과 출력
     cv2.imshow(win_name, res)
