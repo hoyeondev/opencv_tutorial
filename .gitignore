@@ -2,3 +2,4 @@ myvenv/
 .vscode/
 filebrowser.db
 filebrowser.exe
+opencv_06/img/*
