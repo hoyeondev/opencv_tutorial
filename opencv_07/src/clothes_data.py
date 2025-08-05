@@ -41,7 +41,7 @@ def display_info(frame):
     info_text = [
         f"Data points: {len(data)}",
         f"Last HSV: {current_hsv}" if current_hsv is not None else "Last HSV: N/A",
-        "--- Press a number key (1-7) to label ---"
+        "--- Press a number key (1-2) to label ---"
     ]
     
     y_offset = 30
