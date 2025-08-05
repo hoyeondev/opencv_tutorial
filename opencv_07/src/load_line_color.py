@@ -83,14 +83,23 @@ ax3.set_ylabel('Percentage (%)')
 ax3.set_title('Color Distribution')
 
 
-# 막대 위에 텍스트 추가 (BGR, 픽셀 수, 비율)
+# 막대 안에 텍스트 추가 (BGR, 픽셀 수, 비율)
 for i, bar in enumerate(bars):
     bgr = tuple(int(c) for c in centers[i])
     pixel_count = counts[i]
     ratio_percent = ratios[i] * 100
     text = f"BGR={bgr}\n{pixel_count} px\n{ratio_percent:.2f}%"
-    ax3.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1, text,
-             ha='center', va='bottom', fontsize=5)
+
+    # 텍스트 위치: 막대의 중앙 (y = 막대 높이 / 2)
+    ax3.text(
+        bar.get_x() + bar.get_width() / 2,           # x 중앙
+        bar.get_height() / 2,                       # y 중앙
+        text,
+        ha='center',
+        va='center',
+        fontsize=9,
+        color='white' if bar.get_height() > 20 else 'black'  # 대비를 위해 조건부 색상
+    )
 
 plt.tight_layout()
 plt.show()
