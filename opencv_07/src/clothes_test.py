@@ -4,6 +4,13 @@ import pandas as pd
 from collections import deque
 import matplotlib.pyplot as plt
 
+'''
+웹캠으로 촬영한 옷의 종류를 K-NN 알고리즘으로 자동 분류
+- 프로그램 종료 : ESC
+- roi 크기 조정 : -, +
+'''
+
+
 # ---------------------------
 # 1. 데이터 로드 및 KNN 학습
 # ---------------------------
@@ -20,6 +27,7 @@ def load_color_dataset(csv_path='color_dataset.csv'):
     y = df['Label'].values
     
     # 정규화 (학습 데이터와 동일하게)
+    # H(0-180), S(0-255), V(0-255)의 범위를 0-1로 정규화
     X[:, 0] /= 180.0
     X[:, 1] /= 255.0
     X[:, 2] /= 255.0
@@ -33,8 +41,6 @@ if X is None:
 # 라벨 → 숫자 변환 (KNN은 숫자 라벨 필요)
 labels_unique = np.unique(y)
 label_to_int = {name: idx for idx, name in enumerate(labels_unique)}
-
-# ⭐ 수정된 부분: int_to_label은 label_to_int를 기반으로 만듭니다.
 int_to_label = {idx: name for name, idx in label_to_int.items()}
 
 y_numeric = np.array([label_to_int[label] for label in y])
@@ -70,7 +76,7 @@ def mouse_callback(event, x, y, flags, param):
 # 4. 웹캠 열기
 # ---------------------------
 cap = cv2.VideoCapture(0)
-cv2.namedWindow('Color Detection')
+cv2.namedWindow('Cloth Detection')
 cv2.setMouseCallback('Color Detection', mouse_callback)
 
 # ---------------------------
@@ -102,7 +108,7 @@ while True:
 
     # KNN 예측
     sample = normalized_sample.reshape(1, -1)
-    ret, result, neighbours, dist = knn.findNearest(sample, k=3)
+    ret, result, neighbours, dist = knn.findNearest(sample, k=3) # 정확도 측정값 기반
     predicted_idx = int(result[0][0])
     predicted_label = int_to_label[predicted_idx]
     
@@ -112,6 +118,7 @@ while True:
 
     # 히스토리 저장
     history.append(predicted_label)
+    # print('history : ', history)
 
     # ROI와 결과 표시
     cv2.rectangle(frame, (roi_x, roi_y), (roi_x + roi_w, roi_y + roi_h), (0, 255, 0), 2)
