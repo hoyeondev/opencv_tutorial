@@ -76,11 +76,21 @@ ax2.axis('off')
 # (3) 비율 바 차트
 ax3 = fig.add_subplot(3, 1, 3)
 colors_rgb = [tuple(map(lambda x: x/255, c[::-1])) for c in centers]  # BGR → RGB로 변환 후 0~1 범위
-ax3.bar(range(K), ratios*100, color=colors_rgb)
+bars = ax3.bar(range(K), ratios*100, color=colors_rgb)
 ax3.set_xticks(range(K))
 ax3.set_xticklabels([f'Color {i+1}' for i in range(K)])
 ax3.set_ylabel('Percentage (%)')
 ax3.set_title('Color Distribution')
+
+
+# 막대 위에 텍스트 추가 (BGR, 픽셀 수, 비율)
+for i, bar in enumerate(bars):
+    bgr = tuple(int(c) for c in centers[i])
+    pixel_count = counts[i]
+    ratio_percent = ratios[i] * 100
+    text = f"BGR={bgr}\n{pixel_count} px\n{ratio_percent:.2f}%"
+    ax3.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1, text,
+             ha='center', va='bottom', fontsize=5)
 
 plt.tight_layout()
 plt.show()
