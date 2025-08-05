@@ -7,12 +7,38 @@ img_path = '../img/load_line.jpg'
 
 # 이미지 읽기
 img = cv2.imread(img_path)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+if img is None:
+    raise FileNotFoundError("이미지를 찾을 수 없습니다.")
+
+# 가로 크기를 600으로 조정 (비율 유지)
+target_width = 600
+scale = target_width / img.shape[1]
+resized_img = cv2.resize(img, (target_width, int(img.shape[0] * scale)))
+
+# ---------------------------
+# 2. ROI 선택 (리사이즈된 이미지 기준)
+# ---------------------------
+x, y, w, h = cv2.selectROI("Select ROI", resized_img, False)
+cv2.destroyWindow("Select ROI")
+
+if w == 0 or h == 0:
+    raise ValueError("ROI가 선택되지 않았습니다.")
+
+# ROI 좌표를 원본 이미지 비율로 변환
+orig_x = int(x / scale)
+orig_y = int(y / scale)
+orig_w = int(w / scale)
+orig_h = int(h / scale)
+
+roi = img[orig_y:orig_y+orig_h, orig_x:orig_x+orig_w]
+roi_rgb = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
 
 # ---------------------------
 # 1. 데이터 준비
 # ---------------------------
-data = img.reshape((-1, 3)).astype(np.float32)
+data = roi.reshape((-1, 3)).astype(np.float32)
 
 # ---------------------------
 # 2. K-means 적용 (대표 색상 3개)
@@ -61,7 +87,7 @@ for i, (color, cnt, ratio) in enumerate(zip(centers, counts, ratios)):
 fig = plt.figure(figsize=(10, 8))
 
 # (1) 원본 + 클러스터링 이미지 병합
-merged = np.hstack((img_rgb, clustered_img))
+merged = np.hstack((roi_rgb, clustered_img))
 ax1 = fig.add_subplot(3, 1, 1)
 ax1.imshow(merged)
 ax1.set_title('Original + Clustered Image')
