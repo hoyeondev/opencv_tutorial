@@ -53,7 +53,8 @@ labels = labels.flatten()
 
 # 클러스터링 이미지 생성
 res = centers[labels]
-clustered_img = res.reshape((img.shape))
+clustered_img = res.reshape((roi_rgb.shape))
+# clustered_img_rgb = cv2.cvtColor(clustered_img, cv2.COLOR_BGR2RGB)
 
 # ---------------------------
 # 3. 대표 색상 팔레트 시각화
