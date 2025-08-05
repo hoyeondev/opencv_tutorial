@@ -2,8 +2,12 @@
 # 📌 K-평균 클러스터링(K-means Clustering)
 - 참고 : [내용](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-7-K-%ED%8F%89%EA%B7%A0-%EA%B5%B0%EC%A7%91%ED%99%94-K-means-Clustering), [클러스터링 시각화 시뮬레이션](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
 - 클러스터란 비슷한 특성을 가진 데이터끼리의 묶음
+- 비지도 학습 알고리즘
 - 클러스터링이란 어떤 데이터들이 주어졌을 때, 그 데이터들을 클러스터로 그룹화 시켜주는 것
 
+<details>
+<summary>내용보기 🔽</summary>
+   
 ## ✔ 프로세스
 1. 얼마나 많은 클러스터가 필요한지 결정(`K` 결정)
 2. 초기 `Centroid`(각 클러스터의 중심) 선택
@@ -20,6 +24,29 @@
 - 구형(Spherical) 클러스터에만 효과적 : 복잡하거나 길쭉한 형태의 클러스터에는 적합하지 않다.
 - 이상치(Outlier)에 민감 : 데이터 분포에서 멀리 떨어진 데이터 포인트가 있을 경우, 중심점을 크게 이동시킬 수 있다.
 - 데이터의 크기(Scale)에 민감 : 각 변수(특성)의 값 범위가 크게 다르면, 클러스터링 결과가 왜곡될 수 있다.
+
+</details>
+
+---
+
+# 📌 지도 학습과 비지도 학습 알고리즘의 차이
+
+<details>
+<summary>내용보기 🔽</summary>
+   
+## ✔ 지도 학습 (Supervised Learning)
+- '정답'이 있는 데이터를 학습하는 방식
+- 주요 목적 : 새로운 데이터의 결과를 예측하는 것
+- 예시 : K-NN, 의사결정나무, 서포트 벡터 머신 등
+- '빨강'이라는 레이블이 붙은 데이터들을 학습하여, 새로운 데이터가 들어왔을 때 가장 비슷한 레이블로 예측하는 것
+
+## ✔ 비지도 학습 (Unsupervised Learning)
+- '정답'이 없는 데이터를 스스로 학습하는 방식
+- 주요 목적 : 데이터의 구조나 패턴을 발견하여 새로운 인사이트를 얻는 것
+- 예시 : K-평균 군집화(K-Means), PCA 등
+- 온라인 쇼핑몰에서 고객들의 구매 기록을 분석하여 '자주 운동복을 사는 고객', '아웃도어 용품을 주로 사는 고객' 등 비슷한 성향을 가진 고객 그룹을 자동으로 나누는 것
+
+</details>
 
 ---
 
@@ -66,3 +93,73 @@ python load_line_color.py
 
 ---
 
+# 📌 K-최근접 이웃(KNN)
+- 참고 : [내용](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-6-K-%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%9D%B4%EC%9B%83KNN?category=1057680)
+- 머신러닝에서 가장 간단하고 직관적인 **지도 학습** 알고리즘
+- 주로 분류(Classification) 문제에 사용되며, 회귀(Regression)에도 활용할 수 있다.
+- 어떠한 데이터가 주어지면 해당 데이터의 주변(이웃)의 데이터를 살펴본 뒤 더 많은 데이터가 포함되어 있는 범주로 분류하는 방식
+
+<details>
+<summary>내용보기 🔽</summary>
+   
+## ✔ 프로세스
+새로운 데이터가 주어졌을 때, 기존 데이터 중에서 가장 가까운(유사한) K개의 데이터를 찾아보고, 이웃 데이터들이 속한 그룹을 기준으로 새로운 데이터의 그룹을 결정한다.
+1. 거리측정 : 새로운 데이터와 학습된 데이터 간의 거리를 계산
+   - 유클리드 거리
+   - 맨해튼 거리
+2. `K`개의 이웃 선택 : 계산된 거리를 기준으로 가장 가까운 `K`개의 이웃 데이터 선택
+3. 다수결 투표 : 가장 많은 표를 얻은 데이터를 새로운 데이터의 예측 결과로 결정
+
+
+## ✔ KNN 단점
+- 데이터의 양이 많아질수록 거리 계산량이 늘어난다.
+- 데이터의 특성(Feature) 스케일에 매우 민감
+- 데이터의 차원이 커질 수록 성능 저하 가능성 높음
+
+</details>
+
+---
+
+# 📌 웹캠 실시간 의류 분류기 (K-NN 알고리즘 기반)
+## 1. 목표
+- K-NN 알고리즘 학습을 위한 데이터셋 파일을 생성한다.
+- 데이터 전처리를 통해 최적의 K값을 탐색한다.
+- 웹캠으로 촬영한 옷의 색상을 실시간으로 K-NN 알고리즘으로 자동 분류한다.
+
+## 2. 동작설명
+
+### 1. 데이터셋 생성
+- 웹캠을 실행한 뒤 의류 종류를 학습시킨다.
+- 마우스로 학습 데이터 클릭 후 라벨(1~2)에 저장
+- 학습 데이터는 `s` 키를 눌러 `.csv` 형태로 저장
+> <img width="400" height="235" alt="image" src="https://github.com/user-attachments/assets/70d6f7d6-939a-493d-a0f3-74dedc48813d" />
+
+### 2. HSV 값 정규화 / 라벨 인코딩
+- KNN 학습에 사용하기 위해 HSV 값을 0~1 범위로 정규화
+- 문자열 라벨을 숫자 라벨로 변환
+
+### 3. KNN 학습
+- OpenCV `cv2.ml.KNearest_create()` 사용
+- 훈련 데이터(X), 라벨(y_numeric)로 학습 수행
+
+## 3. 결과
+#### roi 모자 위치
+> <img width="226" height="241" alt="image" src="https://github.com/user-attachments/assets/90ed729e-e79f-4beb-9486-3c655c986ce5" />
+
+#### roi 티셔츠 위치
+> <img width="252" height="151" alt="image" src="https://github.com/user-attachments/assets/0beca38f-8a89-4525-97a0-8858aaf758ab" />
+
+
+
+## 4. 실행
+```bash
+# /src
+# 데이터셋 생성
+python clothes_data.py
+
+# 정확도 측정
+python clothes_mnist.py
+
+# 웹캠 실시간 의류 분류
+python clothes_test.py
+```
