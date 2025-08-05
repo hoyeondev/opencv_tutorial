@@ -77,7 +77,7 @@ def mouse_callback(event, x, y, flags, param):
 # ---------------------------
 cap = cv2.VideoCapture(0)
 cv2.namedWindow('Cloth Detection')
-cv2.setMouseCallback('Color Detection', mouse_callback)
+cv2.setMouseCallback('Cloth Detection', mouse_callback)
 
 # ---------------------------
 # 5. 메인 루프
@@ -125,7 +125,7 @@ while True:
     cv2.putText(frame, f"Cloth : {predicted_label}", (roi_x, roi_y - 10),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
 
-    cv2.imshow('Color Detection', frame)
+    cv2.imshow('Cloth Detection', frame)
 
     # ---------------------------
     # 6. 신뢰도 바 차트 시각화
