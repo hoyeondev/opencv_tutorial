@@ -1,12 +1,12 @@
 
 # 📌 K-평균 클러스터링(K-means Clustering)
+<details>
+<summary>내용보기 🔽</summary>
+   
 - 참고 : [내용](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-7-K-%ED%8F%89%EA%B7%A0-%EA%B5%B0%EC%A7%91%ED%99%94-K-means-Clustering), [클러스터링 시각화 시뮬레이션](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
 - 클러스터란 비슷한 특성을 가진 데이터끼리의 묶음
 - **비지도 학습** 알고리즘
 - 클러스터링이란 어떤 데이터들이 주어졌을 때, 그 데이터들을 클러스터로 그룹화 시켜주는 것
-
-<details>
-<summary>내용보기 🔽</summary>
    
 ## ✔ 프로세스
 1. 얼마나 많은 클러스터가 필요한지 결정(`K` 결정)
@@ -99,14 +99,16 @@ python load_line_color.py
 ---
 
 # 📌 K-최근접 이웃(KNN)
+
+
+<details>
+<summary>내용보기 🔽</summary>
+   
 - 참고 : [내용](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-6-K-%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%9D%B4%EC%9B%83KNN?category=1057680)
 - 머신러닝에서 가장 간단하고 직관적인 **지도 학습** 알고리즘
 - 주로 분류(Classification) 문제에 사용되며, 회귀(Regression)에도 활용할 수 있다.
 - 어떠한 데이터가 주어지면 해당 데이터의 주변(이웃)의 데이터를 살펴본 뒤 더 많은 데이터가 포함되어 있는 범주로 분류하는 방식
 
-<details>
-<summary>내용보기 🔽</summary>
-   
 ## ✔ 프로세스
 새로운 데이터가 주어졌을 때, 기존 데이터 중에서 가장 가까운(유사한) K개의 데이터를 찾아보고, 이웃 데이터들이 속한 그룹을 기준으로 새로운 데이터의 그룹을 결정한다.
 1. 거리측정 : 새로운 데이터와 학습된 데이터 간의 거리를 계산
