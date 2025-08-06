@@ -2,7 +2,7 @@
 # 📌 K-평균 클러스터링(K-means Clustering)
 - 참고 : [내용](https://bkshin.tistory.com/entry/%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-7-K-%ED%8F%89%EA%B7%A0-%EA%B5%B0%EC%A7%91%ED%99%94-K-means-Clustering), [클러스터링 시각화 시뮬레이션](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
 - 클러스터란 비슷한 특성을 가진 데이터끼리의 묶음
-- 비지도 학습 알고리즘
+- **비지도 학습** 알고리즘
 - 클러스터링이란 어떤 데이터들이 주어졌을 때, 그 데이터들을 클러스터로 그룹화 시켜주는 것
 
 <details>
