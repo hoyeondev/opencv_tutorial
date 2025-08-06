@@ -4,3 +4,4 @@ filebrowser.db
 filebrowser.exe
 opencv_06/img/*
 opencv_07/src/__pycache__/
+opencv_08/src/svm_random.xml
