@@ -52,6 +52,9 @@
 
 # 📌 차선 색상 분류 실습 (K-means 활용)
 
+<details>
+<summary>내용보기 🔽</summary>
+
 ## 1. 목표
 - 시각적 결과: 원본이미지 , 결과이미지
 - 색상 팔레트: 추출된 4가지 대표 색상
@@ -91,6 +94,8 @@
 python load_line_color.py
 ```
 
+</details>
+
 ---
 
 # 📌 K-최근접 이웃(KNN)
@@ -121,12 +126,40 @@ python load_line_color.py
 ---
 
 # 📌 웹캠 실시간 의류 분류기 (K-NN 알고리즘 기반)
+
+<details>
+<summary>내용보기 🔽</summary>
+   
 ## 1. 목표
 - K-NN 알고리즘 학습을 위한 데이터셋 파일을 생성한다.
 - 데이터 전처리를 통해 최적의 K값을 탐색한다.
 - 웹캠으로 촬영한 옷의 색상을 실시간으로 K-NN 알고리즘으로 자동 분류한다.
 
 ## 2. 동작설명
+
+### 동작 요약 흐름
+```css
+[CSV 데이터 로드] → [HSV 값 정규화] → [KNN 학습]
+           ↓
+      [웹캠 캡처 시작]
+           ↓
+    [ROI 설정 및 추출]
+           ↓
+    [HSV 평균값 계산]
+           ↓
+    [정규화된 샘플 생성]
+           ↓
+    ┌─────────────────────────────┐
+    │   KNN 예측 (k=3) 수행      │
+    │   ───────────────────────   │
+    │   • 예측 라벨 확인          │
+    │   • 신뢰도 계산             │
+    └─────────────────────────────┘
+           ↓
+ [웹캠 화면에 예측 결과 표시 + Matplotlib로 확률 바 차트 출력]
+
+```
+
 
 ### 1. 데이터셋 생성
 - 웹캠을 실행한 뒤 의류 종류를 학습시킨다.
@@ -142,7 +175,33 @@ python load_line_color.py
 - OpenCV `cv2.ml.KNearest_create()` 사용
 - 훈련 데이터(X), 라벨(y_numeric)로 학습 수행
 
+### 4. ROI(관심영역) 설정 및 조작
+- 웹캠 화면에서 **사각형 ROI(100×100 기본)**가 표시되며:
+   - 드래그 → ROI 위치 이동
+   - + 키 → ROI 크기 증가
+   - - 키 → ROI 크기 감소
+- ROI 내부의 평균 색상(HSV)을 추출하여 예측에 사용
+
+### 5. 실시간 색상 추출 및 예측
+- BGR → HSV 변환
+- HSV 평균값 계산
+- 정규화 후 KNN 예측
+
+### 6. 결과 시각화
+- 웹캠 화면에 예측 결과(의류 종류) 텍스트 출력
+```python
+cv2.putText(frame, f"Cloth : {predicted_label}", ...)
+```
+- 각 클래스별 예측 확률(%) 실시간 바 차트로 표시
+```python
+plt.bar(labels_unique, probs * 100)
+```
+
 ## 3. 결과
+
+roi의 위치를 조정해서 모자와 티셔츠 영역을 인식하면 학습 데이터에 따라
+모자와 티셔츠를 출력한다.
+
 #### roi 모자 위치
 > <img width="226" height="241" alt="image" src="https://github.com/user-attachments/assets/90ed729e-e79f-4beb-9486-3c655c986ce5" />
 
@@ -163,3 +222,5 @@ python clothes_mnist.py
 # 웹캠 실시간 의류 분류
 python clothes_test.py
 ```
+
+</details>
