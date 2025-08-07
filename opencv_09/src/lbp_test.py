@@ -12,6 +12,7 @@ face_classifier = cv2.CascadeClassifier(\
 model = cv2.face.LBPHFaceRecognizer_create()
 model.read(os.path.join(base_dir, 'all_face.xml'))
 
+# 스마일 검출 xml 추가
 smile = cv2.CascadeClassifier(\
                 '../data/haarcascade_smile.xml')
 
@@ -57,6 +58,7 @@ while cap.isOpened():
         face_roi_gray = gray[y:y+h, x:x+w]
         detected_smile = smile.detectMultiScale(face_roi_gray, scaleFactor=1.7, minNeighbors=22)
 
+        # 스마일 정보 출력
         if len(detected_smile) > 0 and accuracy >= min_accuracy:
             smile_text = "~~~ SMILE ~~~"
             font = cv2.FONT_HERSHEY_DUPLEX
