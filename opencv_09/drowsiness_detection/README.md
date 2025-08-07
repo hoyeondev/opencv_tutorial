@@ -26,7 +26,7 @@
 ## 4. 출력 예시
 
 #### 졸음 감지 인식
-졸음 감지 시 `Don't fall asleep!!!!" 메세지 출력
+졸음 감지 시 `Don't fall asleep!!!!` 메세지 출력
 > <img width="400" height="289" alt="image" src="https://github.com/user-attachments/assets/1ff4b308-fd4a-41fb-9545-ac581638102e" />
 
 #### 졸지 않는 상태 인식
