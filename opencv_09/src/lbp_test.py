@@ -45,7 +45,7 @@ while cap.isOpened():
         face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
         # LBP 얼굴 인식기로 예측 ---⑥
         label, confidence = model.predict(face)
-        print(names)
+        # print(names)
         if confidence < 400:
             # 정확도 거리를 퍼센트로 변환 ---⑦
             accuracy = int( 100 * (1 -confidence/400))
