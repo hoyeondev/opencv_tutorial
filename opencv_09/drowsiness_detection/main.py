@@ -2,6 +2,7 @@ import cv2
 import dlib
 from basic_landmark import detect_faces
 import utils
+import numpy as np
 
 # 눈 인덱스
 LEFT_EYE_IDX = [36, 37, 38, 39, 40, 41]
@@ -32,23 +33,19 @@ def main():
         # 1단계: 얼굴 검출 및 랜드마크 추출
 
         # faces = detect_faces(frame, detector)
-        faces, landmarks, frame = detect_faces(frame, detector, predictor, draw_landmarks=True)
-
-        # 안내 메세지 출력
-        cv2.putText(frame, "ESC: Exit", (10, 30), 
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2, cv2.LINE_AA)
-        cv2.imshow('Drowsiness Detection', frame)
+        faces, landmarks, frame_res = detect_faces(frame, detector, predictor, draw_landmarks=True)
         
-
         if len(faces) > 0:
 
             # print(len(faces))
 
             # 2단계: EAR 계산
-            # print(landmarks)
-            # ear_value = calculate_ear_from_landmarks(landmarks)
-            left_ear = utils.calculate_ear_from_landmarks(landmarks, LEFT_EYE_IDX)
-            right_ear = utils.calculate_ear_from_landmarks(landmarks, RIGHT_EYE_IDX)
+            left_eye_landmarks = np.array(landmarks[0][36:42])
+            right_eye_landmarks = np.array(landmarks[0][42:48])
+
+            # EAR 계산
+            left_ear = utils.calculate_ear_from_landmarks(left_eye_landmarks)
+            right_ear = utils.calculate_ear_from_landmarks(right_eye_landmarks)
             avg_ear = (left_ear + right_ear) / 2.0
 
             # print(avg_ear)
@@ -65,24 +62,16 @@ def main():
                 drowsy = True
             
             # 4단계: 결과 표시
-            print(drowsy)
+            # print(drowsy)
             if drowsy:
-                cv2.putText(frame, "졸음 감지! 주의하세요!", (30, 60),
+                cv2.putText(frame, "Don't fall asleep!!!!", (30, 60),
                             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 255), 3)
 
-        #     # 4단계: 졸음 판단
 
-        #     drowsy_state = check_drowsiness(ear_value)
-
-            
-
-        #     # 5단계: 결과 표시
-
-        #     draw_results(frame, landmarks, ear_value, drowsy_state)
-
-        
-
-        # cv2.imshow('Drowsiness Detection', frame)
+        # 안내 메세지 출력
+        cv2.putText(frame, "ESC: Exit", (10, 30), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.imshow('Drowsiness Detection', frame)
 
         if cv2.waitKey(1) == 27:  # ESC 키
 
