@@ -21,6 +21,7 @@ while cap.isOpened():
 
     for (x, y, w, h) in faces:
         # 얼굴 영역만 추출
+        # 관심영역을 얼굴 영역으로 지정
         roi = img[y:y+h, x:x+w]
 
         # 얼굴 영역 축소 → 확대하여 모자이크 효과
@@ -35,5 +36,5 @@ while cap.isOpened():
     if cv2.waitKey(5) == 27:  # ESC 키 누르면 종료
         break
 
-cap.release()
+cap.release() # 카메라 연결 해제
 cv2.destroyAllWindows()
