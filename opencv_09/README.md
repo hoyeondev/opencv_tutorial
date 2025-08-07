@@ -3,7 +3,8 @@
 <details>
 <summary>내용보기 🔽</summary>
 
-  - 참고 : [내용1](http://atonrq.synology.me:1700/hypha/haarcascade), [내용2](https://bkshin.tistory.com/entry/%EC%BB%B4%ED%93%A8%ED%84%B0-%EB%B9%84%EC%A0%84-1-%ED%95%98%EB%A5%B4-%EC%BA%90%EC%8A%A4%EC%BC%80%EC%9D%B4%EB%93%9C-%EC%96%BC%EA%B5%B4-%EA%B2%80%EC%B6%9C-Haar-Cascade-Face-Detection)
+- 참고 : [내용1](http://atonrq.synology.me:1700/hypha/haarcascade), [내용2](https://bkshin.tistory.com/entry/%EC%BB%B4%ED%93%A8%ED%84%B0-%EB%B9%84%EC%A0%84-1-%ED%95%98%EB%A5%B4-%EC%BA%90%EC%8A%A4%EC%BC%80%EC%9D%B4%EB%93%9C-%EC%96%BC%EA%B5%B4-%EA%B2%80%EC%B6%9C-Haar-Cascade-Face-Detection)
+- 학습 모델 데이터 : [OpenCV github](https://github.com/opencv/opencv/tree/4.x/data/haarcascades)
 - 개발자가 집접 머신러닝 학습 알고리즘을 사용하지 않고도 객체를 검출할 수 있도록 OpenCV가 제공하는 대표적인 상위 레벨 API
 - OpenCV는 케스케이드 분류기에서 사용할 수 있는 훈련된 검출기를 xml 파일 형태로 제공한다.
 
@@ -15,7 +16,7 @@
 
 ---
 
-# 📌 LBPH(Local Binary Patterns Histograms) 알고리즘
+# 📌 LBPH(Local Binary Patterns Histograms) 얼굴인식 알고리즘
 
 <details>
 <summary>내용보기 🔽</summary>
@@ -89,6 +90,45 @@ detected_smile = smile.detectMultiScale(face_roi_gray, scaleFactor=1.7, minNeigh
 
 #### 웃는 모습(smile) 인식
 > <img width="300" height="400" alt="image" src="https://github.com/user-attachments/assets/c49d4eaf-b1f6-4997-ad85-01d35c0cdbf0" />
+
+
+## 5. 실행
+```bash
+# haarcascade_frontalface_default.xml
+# OpenCV의 data/haarcascades 디렉토리에서 사용 가능
+# ./src
+python lbp_test.py
+```
+---
+
+# 📌 실시간 영상 얼굴 인식 + 모자이크
+
+## 1. 목표
+- 얼굴 검출 기능 사용
+- 웹캠으로 출력되는 영상에서 자동으로 얼굴 인식
+- 인식된 얼굴에 roi 설정 후 모자이크 처리
+
+## 2. 주요기능
+- 얼굴 검출: `haarcascade_frontalface_default.xml` 사용
+- 모자이크 적용 여부: `Enter` 키로 전환
+- `ESC` 키로 프로그램 종료
+- 모자이크 대신 사각형 그리기(roi)로 얼굴 시각화 선택 가능
+- 화면 좌측 상단에 키보드 안내 텍스트 표시
+
+## 3. 출력 예시
+#### 모자이크
+> <img width="300" height="400" alt="image" src="https://github.com/user-attachments/assets/18ea47d8-94b0-467f-8dc2-476c8ac87fe1" />
+
+#### 모자이크 ❌
+> <img width="300" height="400" alt="image" src="https://github.com/user-attachments/assets/464688b9-07a4-4955-91b3-0ef0d842a375" />
+
+## 4. 실행
+```bash
+# haarcascade_frontalface_default.xml
+# OpenCV의 data/haarcascades 디렉토리에서 사용 가능
+# ./src
+python mosaic_test.py
+```
 
 ---
 
