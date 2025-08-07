@@ -127,9 +127,7 @@ python load_line_color.py
 
 # 📌 웹캠 실시간 의류 분류기 (K-NN 알고리즘 기반)
 
-<details>
-<summary>내용보기 🔽</summary>
-   
+
 ## 1. 목표
 - K-NN 알고리즘 학습을 위한 데이터셋 파일을 생성한다.
 - 데이터 전처리를 통해 최적의 K값을 탐색한다.
