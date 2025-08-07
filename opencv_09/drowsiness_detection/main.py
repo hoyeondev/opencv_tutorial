@@ -26,12 +26,14 @@ def main():
         # 1단계: 얼굴 검출
 
         # faces = detect_faces(frame, detector)
-        result_img = detect_faces(frame, detector, predictor, draw_landmarks=True)
+        faces, result_img = detect_faces(frame, detector, predictor, draw_landmarks=True)
 
         cv2.imshow('Drowsiness Detection', result_img)
         
 
-        # if len(faces) > 0:
+        if len(faces) > 0:
+
+            print(len(faces))
 
         #     # 2단계: 랜드마크 추출
 
