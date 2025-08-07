@@ -37,7 +37,7 @@ def detect_faces(frame, detector, predictor, draw_landmarks=True):
             for (px, py) in landmarks:
                 cv2.circle(img, (px, py), 2, (0, 0, 255), -1)
 
-    return faces, img
+    return faces, landmarks_all, img
 
 
 # 테스트 코드
