@@ -2,11 +2,11 @@ import cv2
 import dlib
 
 # 얼굴 검출기와 랜드마크 검출기 생성 --- ①
-detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('../src/shape_predictor_68_face_landmarks.dat')
+# detector = dlib.get_frontal_face_detector()
+# predictor = dlib.shape_predictor('../src/shape_predictor_68_face_landmarks.dat')
 
 
-def detect_faces(frame, draw_landmarks=True):
+def detect_faces(frame, detector, predictor, draw_landmarks=True):
     """
     얼굴 검출 및 랜드마크 표시 함수
     :param frame: BGR 이미지 프레임
@@ -37,7 +37,7 @@ def detect_faces(frame, draw_landmarks=True):
             for (px, py) in landmarks:
                 cv2.circle(img, (px, py), 2, (0, 0, 255), -1)
 
-    return face_boxes, landmarks_all, img
+    return img
 
 
 # 테스트 코드
