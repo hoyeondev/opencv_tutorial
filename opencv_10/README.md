@@ -2,7 +2,7 @@
  
 # 📌 EasyOCR 
 
-- 참고 : [튜토리얼](https://www.jaided.ai/easyocr/tutorial/)
+- 참고 : [튜토리얼](https://www.jaided.ai/easyocr/tutorial/), [공식Github](https://github.com/JaidedAI/EasyOCR)
 -  파이썬 기반의 광학 문자 인식 (OCR: Optical Character Recognition) 라이브러리
 -  딥러닝 기반의 문자 인식 모델을 사용하여 다양한 언어의 텍스트를 이미지에서 추출할 수 있도록 설계
 -  PyTorch 기반으로 동작하며, GPU 및 CPU 모두 지원
