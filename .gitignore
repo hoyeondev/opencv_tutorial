@@ -11,3 +11,4 @@ opencv_08/img/101_ObjectCategories/
 opencv_09/data/
 opencv_09/src/faces/
 opencv_09/drowsiness_detection/__pycache__/
+opencv_12/src/*.pt
