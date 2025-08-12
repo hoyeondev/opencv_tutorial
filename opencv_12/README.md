@@ -51,17 +51,64 @@
 
 ## 3. 동작 흐름
 
+#### 1. 커맨드라인 옵션 파싱 (`parse_opt` 함수)
+- argparse를 이용해 실행 시 전달되는 인자들을 파싱
+- 주요 옵션
+  - `--weights`: YOLO 모델 가중치 파일 경로 (기본: "yolo11n.pt")
+  - `--device`: 처리할 디바이스 설정 (예: "cpu", "0" 등)
+  - `--source`: 입력 비디오 파일 경로 (필수)
+  - `--view-img`: 결과 화면 표시 여부 (플래그)
+  - `--save-img`: 결과 영상 저장 여부 (플래그)
+  - `--exist-ok`: 기존 결과 폴더 덮어쓰기 여부 (플래그)
+  - `--classes`: 탐지할 클래스 필터, 기본 `[0]` (사람 클래스)
+  - `--line-thickness`: 바운딩 박스 두께
+  - `--track-thickness`: 추적선 두께
+  - `--region-thickness`: 영역 경계선 두께
 
+#### 2. 메인 함수 실행 (`main` 함수)
+- `parse_opt()`로 옵션을 받아 `run` 함수에 키워드 인자로 전달
+- `run(**vars(options))` 형태로 실행
+
+#### 3. `run` 함수 상세 흐름
+
+##### 초기 설정
+- 입력 비디오 경로 존재 여부 확인, 없으면 예외 발생
+- YOLO 모델 로드 및 디바이스(CPU 또는 CUDA) 설정
+- 모델 클래스 이름(`names`) 추출
+- OpenCV `VideoCapture`를 통해 비디오 열기 및 영상 정보(가로, 세로, FPS) 읽기
+
+##### 마우스 이벤트 콜백 등록
+- 첫 프레임 표시 시 OpenCV 창 생성 및 마우스 콜백 함수 `mouse_callback` 등록
+	→ 영역(폴리곤) 드래그 및 이동 기능 제공
+
+##### 영상 프레임 반복 처리
+- 프레임 단위로 영상 읽기
+- YOLO 모델로 객체 탐지 및 ByteTrack 기반 추적 수행(`model.track`)
+- 탐지 결과 중 트랙킹된 박스 정보(좌표, ID, 클래스) 추출
+- `Annotator`를 사용해 박스와 클래스명 라벨 그리기
+- 각 트랙 ID 별로 중심점 좌표 기록 후 이동 경로 그리기 (최대 30프레임 분량)
+- 각 탐지 중심점이 속하는 영역(폴리곤) 확인 후 해당 영역 카운트 증가
+
+
+##### 화면 출력 및 종료 조건
+- `--view-img` 옵션이 켜져 있으면 프레임을 OpenCV 창에 띄움
+- `q` 키 입력 시 반복 종료
+
+
+#### 4. 마우스 콜백 함수 (`mouse_callback`)
+- 마우스 좌클릭 시 영역 내 좌표를 체크하여 드래그 시작
+- 드래그 중 좌표 변화량을 영역 폴리곤 좌표에 반영하여 영역 이동
+- 마우스 버튼 놓으면 드래그 종료
 > <img width="400" height="450" alt="image" src="https://github.com/user-attachments/assets/02db8a27-74b4-4c30-84b6-d58a600c76e6" />
 
 
 ## 4. 실행방법
 ```bash
 # yolo용 가상환경 생성
-
+python -m venv yolovenv
 
 # 가상환경 실행
-source yolovenv/Script
+source yolovenv/Scripts/activate
 
 # pip 패키지 다운로드
 pip install ultralytics
@@ -69,7 +116,6 @@ pip install ultralytics
 # yolo_test.py 스크립트를 실행하여,
 # 상위 폴더 video 내의 sample.mp4 영상을 YOLO 모델로 처리하고,
 # 처리 결과를 실시간으로 화면에 띄워서 보여준다.
-
 python yolo_test.py --source ../video/sample.mp4 --view-img
 ```
 
