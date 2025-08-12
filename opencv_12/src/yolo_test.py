@@ -236,6 +236,7 @@ def parse_opt() -> argparse.Namespace:
     parser.add_argument("--save-img", action="store_true", help="save results")
     parser.add_argument("--exist-ok", action="store_true", help="existing project/name ok, do not increment")
     # parser.add_argument("--classes", nargs="+", type=int, help="filter by class: --classes 0, or --classes 0 2 3")
+    # 사람만 추적하도록 변경
     parser.add_argument("--classes", nargs="+", type=int, default=[0], help="filter by class: --classes 0, or --classes 0 2 3")
     parser.add_argument("--line-thickness", type=int, default=2, help="bounding box thickness")
     parser.add_argument("--track-thickness", type=int, default=2, help="Tracking line thickness")
