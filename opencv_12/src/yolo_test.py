@@ -144,7 +144,7 @@ def run(
     # Output setup
     save_dir = increment_path(Path("ultralytics_rc_output") / "exp", exist_ok)
     save_dir.mkdir(parents=True, exist_ok=True)
-    video_writer = cv2.VideoWriter(str(save_dir / f"{Path(source).stem}.avi"), fourcc, fps, (frame_width, frame_height))
+    # video_writer = cv2.VideoWriter(str(save_dir / f"{Path(source).stem}.avi"), fourcc, fps, (frame_width, frame_height))
 
     # Iterate over video frames
     while videocapture.isOpened():
@@ -211,8 +211,8 @@ def run(
                 cv2.setMouseCallback("Ultralytics YOLO Region Counter Movable", mouse_callback)
             cv2.imshow("Ultralytics YOLO Region Counter Movable", frame)
 
-        if save_img:
-            video_writer.write(frame)
+        # if save_img:
+        #     video_writer.write(frame)
 
         for region in counting_regions:  # Reinitialize count for each region
             region["counts"] = 0
@@ -221,7 +221,7 @@ def run(
             break
 
     del vid_frame_count
-    video_writer.release()
+    # video_writer.release()
     videocapture.release()
     cv2.destroyAllWindows()
 
