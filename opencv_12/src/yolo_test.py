@@ -16,13 +16,14 @@ region_points = {
 
 # Video writer
 w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
-video_writer = cv2.VideoWriter("region_counting.avi", cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+# video_writer = cv2.VideoWriter("region_counting.avi", cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
 
 # Initialize region counter object
 regioncounter = solutions.RegionCounter(
     show=True,  # display the frame
     region=region_points,  # pass region points
     model="yolo11n.pt",  # model for counting in regions i.e yolo11s.pt
+    classes=[0] # 사람만 추적
 )
 
 # Process video
@@ -36,9 +37,11 @@ while cap.isOpened():
     results = regioncounter(im0)
 
     # print(results)  # access the output
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-    video_writer.write(results.plot_im)
+    # video_writer.write(results.plot_im)
 
 cap.release()
-video_writer.release()
+# video_writer.release()
 cv2.destroyAllWindows()  # destroy all opened windows
